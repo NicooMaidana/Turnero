@@ -1,0 +1,26 @@
+# Compilación
+bin/
+obj/
+
+# Base de datos local
+*.db
+
+# Configuración de usuario
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+
+# Publicaciones
+*.publish/
+*.publish.xml
+
+# Archivos de VS
+.vs/
+
+# Configuración de sistema operativo
+.DS_Store
+Thumbs.db

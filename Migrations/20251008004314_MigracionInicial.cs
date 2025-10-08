@@ -51,6 +51,19 @@ namespace Turnero.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Provincias",
+                columns: table => new
+                {
+                    ProvinciaID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreProvincia = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Provincias", x => x.ProvinciaID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -156,6 +169,26 @@ namespace Turnero.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Localidades",
+                columns: table => new
+                {
+                    LocalidadID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NombreLocalidad = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProvinciaID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Localidades", x => x.LocalidadID);
+                    table.ForeignKey(
+                        name: "FK_Localidades_Provincias_ProvinciaID",
+                        column: x => x.ProvinciaID,
+                        principalTable: "Provincias",
+                        principalColumn: "ProvinciaID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +227,11 @@ namespace Turnero.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Localidades_ProvinciaID",
+                table: "Localidades",
+                column: "ProvinciaID");
         }
 
         /// <inheritdoc />
@@ -215,10 +253,16 @@ namespace Turnero.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Localidades");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Provincias");
         }
     }
 }

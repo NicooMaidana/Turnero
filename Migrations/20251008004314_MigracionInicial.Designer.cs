@@ -12,7 +12,7 @@ using Turnero.Data;
 namespace Turnero.Migrations
 {
     [DbContext(typeof(TurneroDbContext))]
-    [Migration("20251003004315_MigracionInicial")]
+    [Migration("20251008004314_MigracionInicial")]
     partial class MigracionInicial
     {
         /// <inheritdoc />
@@ -227,6 +227,45 @@ namespace Turnero.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Turnero.Models.Localidad", b =>
+                {
+                    b.Property<int>("LocalidadID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LocalidadID"));
+
+                    b.Property<string>("NombreLocalidad")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProvinciaID")
+                        .HasColumnType("int");
+
+                    b.HasKey("LocalidadID");
+
+                    b.HasIndex("ProvinciaID");
+
+                    b.ToTable("Localidades");
+                });
+
+            modelBuilder.Entity("Turnero.Models.Provincia", b =>
+                {
+                    b.Property<int>("ProvinciaID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProvinciaID"));
+
+                    b.Property<string>("NombreProvincia")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ProvinciaID");
+
+                    b.ToTable("Provincias");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -276,6 +315,22 @@ namespace Turnero.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Turnero.Models.Localidad", b =>
+                {
+                    b.HasOne("Turnero.Models.Provincia", "Provincias")
+                        .WithMany("Localidades")
+                        .HasForeignKey("ProvinciaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Provincias");
+                });
+
+            modelBuilder.Entity("Turnero.Models.Provincia", b =>
+                {
+                    b.Navigation("Localidades");
                 });
 #pragma warning restore 612, 618
         }
